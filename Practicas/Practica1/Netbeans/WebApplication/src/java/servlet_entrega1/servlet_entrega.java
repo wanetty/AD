@@ -80,7 +80,8 @@ public class servlet_entrega extends HttpServlet {
           ResultSet rs = statement.executeQuery("select * from usuarios");
          out.println("<br>");
          out.println("<h3>Todo</h3>");
-          out.println("<table>");
+         out.println("<h4>Usuarios</h4>");
+         out.println("<table>");
           
           while(rs.next())
           {
@@ -92,7 +93,9 @@ public class servlet_entrega extends HttpServlet {
           } 
 
           rs = statement.executeQuery("select * from hoteles");
-
+          out.println("</table>");
+        out.println("<h4>Hoteles</h4>");
+        out.println("<table>");
           while(rs.next())
           {
               out.println("<tr>");
@@ -102,6 +105,20 @@ public class servlet_entrega extends HttpServlet {
             out.println("</tr>");            
           } 
           out.println("</table>");
+          rs = statement.executeQuery("select * from vuelos");
+          out.println("<h4>Vuelos</h4>");
+        out.println("<table>");
+        while(rs.next())
+          {
+              out.println("<tr>");
+            // read the result set
+            out.println("<th>Id vuelo = " + rs.getString("id_vuelo")+ "<th>");
+            out.println("<th>Número de vuelo = " + rs.getString("num_vuelo")+ "<th>");
+            out.println("<th>Compañia = " + rs.getString("companyia")+ "<th>");
+            out.println("</tr>");            
+          } 
+          out.println("</table>");
+          
           out.println("<br>");
           out.println("<a href='http://localhost:8080/WebApplication/index.html'>Volver</a>");
           out.println("</body>");
