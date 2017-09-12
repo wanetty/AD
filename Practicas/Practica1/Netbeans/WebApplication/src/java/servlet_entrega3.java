@@ -3,27 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet_entrega1;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author 1175057
+ * @author Papilomavirus
  */
-@WebServlet(name = "servlet_entrega", urlPatterns = {"/servlet_entrega"})
-public class servlet_entrega extends HttpServlet {
+@WebServlet(urlPatterns = {"/servlet_entrega3"})
+public class servlet_entrega3 extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,28 +77,16 @@ public class servlet_entrega extends HttpServlet {
           statement.executeUpdate("insert into hoteles values(1, 'Plaza', 'Plaza',150,'Plaza Espanya',1, '08003', 'Barcelona','Barcelona','Espanya')");
           statement.executeUpdate("insert into hoteles values(2, 'W', 'Hilton',120,'Paseo maritimo',1, '08003', 'Barcelona','Barcelona','Espanya')");          
           ResultSet rs = statement.executeQuery("select * from usuarios");
-         out.println("<br>");
-         out.println("<h3>Todo</h3>");
+          out.println("<h3>Usuarios</h3>");
           out.println("<table>");
           
           while(rs.next())
           {
-              out.println("<tr>");
+            out.println("<tr>");
             // read the result set
             out.println("<th>Id usuario = " + rs.getString("id_usuario") + "<th>");
             out.println("<th>Password = " + rs.getString("password")+ "</th>");  
             out.println("</tr>");
-          } 
-
-          rs = statement.executeQuery("select * from hoteles");
-
-          while(rs.next())
-          {
-              out.println("<tr>");
-            // read the result set
-            out.println("<th>Id hotel = " + rs.getString("id_hotel")+ "<th>");
-            out.println("<th>Nombre = " + rs.getString("nom_hotel")+ "<th>");
-            out.println("</tr>");            
           } 
           out.println("</table>");
           out.println("<br>");
@@ -125,12 +112,7 @@ public class servlet_entrega extends HttpServlet {
             // connection close failed.
             System.err.println(e.getMessage());
           }
-        }       
-        
-        
-        
-        
-         
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
