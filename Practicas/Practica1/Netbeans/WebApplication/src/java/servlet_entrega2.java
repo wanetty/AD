@@ -24,6 +24,8 @@ import java.sql.Statement;
 @WebServlet(urlPatterns = {"/servlet_entrega2"})
 public class servlet_entrega2 extends HttpServlet {
 
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -61,21 +63,7 @@ public class servlet_entrega2 extends HttpServlet {
           Statement statement = connection.createStatement();
           statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-          statement.executeUpdate("drop table if exists usuarios");
-          statement.executeUpdate("drop table if exists vuelos");
-          statement.executeUpdate("drop table if exists hoteles");
-                    
-          statement.executeUpdate("create table usuarios (id_usuario string primary key, password string)");
-          statement.executeUpdate("insert into usuarios values('Silvia','12345')");
-          statement.executeUpdate("insert into usuarios values('Pepito','23456')");
-
-          statement.executeUpdate("create table vuelos (id_vuelo integer primary key, num_vuelo string,companyia string, origen string, hora_salida string, destino string, hora_llegada string)");
-          statement.executeUpdate("insert into vuelos values(1, '22', 'IBE','BCN','09:00','SVQ','10:25')");
-          statement.executeUpdate("insert into vuelos values(2, '33', 'VUE','BCN','09:00','BRU','11:25')");
-          
-          statement.executeUpdate("create table hoteles (id_hotel integer primary key, nom_hotel string, cadena string,numb_hab integer,calle string, numero integer,codigo_postal string,ciudad string,provincia string,pais string)");
-          statement.executeUpdate("insert into hoteles values(1, 'Plaza', 'Plaza',150,'Plaza Espanya',1, '08003', 'Barcelona','Barcelona','Espanya')");
-          statement.executeUpdate("insert into hoteles values(2, 'W', 'Hilton',120,'Paseo maritimo',1, '08003', 'Barcelona','Barcelona','Espanya')");          
+  
           ResultSet rs = statement.executeQuery("select * from hoteles");
           out.println("<h3>Hoteles</h3>");
           out.println("<table>");

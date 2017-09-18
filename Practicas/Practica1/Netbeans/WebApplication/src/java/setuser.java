@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Papilomavirus
  */
-@WebServlet(urlPatterns = {"/servlet_entrega3"})
-public class servlet_entrega3 extends HttpServlet {
+@WebServlet(urlPatterns = {"/setuser"})
+public class setuser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,67 +37,10 @@ public class servlet_entrega3 extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Connection connection = null;
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet servlet_entrega</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Entrega 2 -> Práctica 1</h1>");
-            out.println("<h2>Eduard González Moreno</h2>");
-            out.println("<h2>Miguel Guerrero Lopez</h2>");
-            out.println("<hr>");
-            
-
-        // load the sqlite-JDBC driver using the current class loader
-          Class.forName("org.sqlite.JDBC");   
-          java.util.Date d = new java.util.Date();
-          out.println("La fecha actual es " + d);             
           
-          // create a database connection
-          connection = DriverManager.getConnection("jdbc:sqlite:C:\\WORKSPACE\\Universidad\\AD\\Practicas\\Practica1\\DBpractica1.db");
-          Statement statement = connection.createStatement();
-          statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
-          ResultSet rs = statement.executeQuery("select * from usuarios");
-          out.println("<h3>Usuarios</h3>");
-          out.println("<table>");
           
-          while(rs.next())
-          {
-            out.println("<tr>");
-            // read the result set
-            out.println("<th>Id usuario = " + rs.getString("id_usuario") + "<th>");
-            out.println("<th>Password = " + rs.getString("password")+ "</th>");  
-            out.println("</tr>");
-          } 
-          out.println("</table>");
-          out.println("<br>");
-          out.println("<a href='http://localhost:8080/WebApplication/index.html'>Volver</a>");
-          out.println("</body>");
-          out.println("</html>");
-
-         
-        }
-        catch(SQLException | ClassNotFoundException e)
-        {
-          System.err.println(e.getMessage());
-        }   
-        finally
-        {
-          try
-          {
-            if(connection != null)
-              connection.close();
-          }
-          catch(SQLException e)
-          {
-            // connection close failed.
-            System.err.println(e.getMessage());
-          }
         }
     }
 
@@ -126,7 +70,39 @@ public class servlet_entrega3 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Practica 1</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            
+            
+          
+        
+        String user = request.getParameter("usr");
+        String pass = request.getParameter("pass");
+        try {
+            alta_usr(user,pass,out);
+             
+        } catch (SQLException ex) {
+            Logger.getLogger(setuser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        
+    }
+    
+    private void alta_usr(String user,  String pass,PrintWriter out ) throws SQLException{
+         Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\WORKSPACE\\Universidad\\AD\\Practicas\\Practica1\\DBpractica1.db");
+          Statement statement = connection.createStatement();
+          statement.setQueryTimeout(30);  // set timeout to 30 sec.
+          statement.executeUpdate("insert into usuarios values('"+user+"','"+pass+"')");
+          out.println("Se ha añadido correctamente a la BBDD");
+          out.println("<br><a href = 'servlet_entrega3'>Ver resultado</a>");
+          out.println("<br><a href='index.html'>Volver</a>");
     }
 
     /**
