@@ -20,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -45,7 +46,7 @@ public class login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");            
+            out.println("<title>Servlet login</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
@@ -80,27 +81,40 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         
+        Connection connection = null;
         try {
-            Statement st = conectar();
+            Class.forName("org.sqlite.JDBC");
+
+            // create a database connection
+            connection = DriverManager.getConnection("jdbc:sqlite:C:\\WORKSPACE\\Universidad\\AD\\Practicas\\DBpractica2.db");
+            Statement st = connection.createStatement();
+            st.setQueryTimeout(30);
             String user = request.getParameter("user");
             String pass = request.getParameter("pwd");
-            ResultSet rs = st.executeQuery("Select * from usuarios where id_usuario = '"+user+"' and password = '"+pass+"'");
+            ResultSet rs = st.executeQuery("Select * from usuarios where id_usuario = '" + user + "' and password = '" + pass + "'");
             //processRequest(request,response);
-            
-            if (!rs.next()) {                            
-               response.sendRedirect("error.jsp"); 
-                
-            }
-            else {
+
+            if (!rs.next()) {
+                response.sendRedirect("error.jsp");
+
+            } else {
+                HttpSession misession = request.getSession(true);
+
                 response.sendRedirect("menu.jsp");
-            
+
             }
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-        
-        
+
     }
 
     /**
@@ -113,22 +127,4 @@ public class login extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
-    Statement conectar() throws SQLException, ClassNotFoundException{
-      
-            
-        // load the sqlite-JDBC driver using the current class loader
-          Class.forName("org.sqlite.JDBC");   
-          java.util.Date d = new java.util.Date();
-          out.println("La fecha actual es " + d);             
-          
-          // create a database connection
-          Connection connection = DriverManager.getConnection("jdbc:sqlite:F:\\windows\\AD\\Practica2\\DBpractica2.db");
-          Statement statement = connection.createStatement();
-          statement.setQueryTimeout(30);  // set timeout to 30 sec.
-          
-          return statement;
-        
-    }
-    
 }

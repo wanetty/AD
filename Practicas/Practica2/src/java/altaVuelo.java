@@ -6,11 +6,20 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import login.login;
 
 /**
  *
@@ -36,7 +45,7 @@ public class altaVuelo extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet altaVuelo</title>");            
+            out.println("<title>Servlet altaVuelo</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet altaVuelo at " + request.getContextPath() + "</h1>");
@@ -71,18 +80,53 @@ public class altaVuelo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         String num_vuelo = request.getParameter("numv");
         String compania = request.getParameter("comp");
         String ciudad_origen = request.getParameter("corg");
         String hora_salida = request.getParameter("hsal");
         String ciudad_destino = request.getParameter("cdes");
         String hllegada = request.getParameter("hlle");
-        if ((num_vuelo.equals("") || num_vuelo == null)|| (compania.equals("") || compania == null)|| (ciudad_origen.equals("") || ciudad_origen == null)
-           || (hora_salida.equals("") || hora_salida == null)|| (ciudad_destino.equals("") || ciudad_destino == null)|| (hllegada.equals("") || hllegada == null) ) {
-        response.sendRedirect("error.jsp");
+        if ((num_vuelo.equals("") || num_vuelo == null) || (compania.equals("") || compania == null) || (ciudad_origen.equals("") || ciudad_origen == null)
+                || (hora_salida.equals("") || hora_salida == null) || (ciudad_destino.equals("") || ciudad_destino == null) || (hllegada.equals("") || hllegada == null)) {
+            response.sendRedirect("error.jsp");
         }
-       
-        
+        if (!isNumeric(num_vuelo)) {
+            response.sendRedirect("error.jsp");
+        }
+        if (!isHour(hora_salida) || !isHour(hllegada)) {
+            response.sendRedirect("error.jsp");
+        }
+        if (ciudad_origen.equals(ciudad_destino)) {
+            response.sendRedirect("error.jsp");
+        }
+            Connection connection = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+
+            // create a database connection
+            connection = DriverManager.getConnection("jdbc:sqlite:C:\\WORKSPACE\\Universidad\\AD\\Practicas\\DBpractica2.db");
+            Statement st = connection.createStatement();
+            st.setQueryTimeout(30);
+          
+            ResultSet id = st.executeQuery("Select max(id_vuelo) from vuelos");
+            Integer id_num = -1;
+            while(id.next()){
+                id_num = (id.getInt(1)+1);
+            }
+            st.executeUpdate("Insert into vuelos values ('"+id_num+"','"+num_vuelo+"','"+compania.toUpperCase()+"','"+ciudad_origen.toUpperCase()+"','"+hora_salida+"','"+ciudad_destino.toUpperCase()+"','"+hllegada+"')");
+            response.sendRedirect("menu.jsp");
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(altaVuelo.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(altaVuelo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     /**
@@ -95,4 +139,31 @@ public class altaVuelo extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private static boolean isNumeric(String cadena) {
+        try {
+            Integer.parseInt(cadena);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+
+    private static boolean isHour(String cadtex) {
+        if (cadtex.length() != 5) {
+            return false;
+        }
+        if (!isNumeric(cadtex.substring(0, 2)) || (!isNumeric(cadtex.substring(3, 5)))) {
+            return false;
+        }
+        Integer h = new Integer(cadtex.substring(0, 2));
+        Integer m = new Integer(cadtex.substring(3, 5));
+
+        if (cadtex.substring(2, 3).compareTo(":") != 0) {
+            return false;
+        }
+        if ((h > 25) || (h < 0) || (m > 59) || (m < 0)) {
+            return false;
+        }
+        return true;
+    }
 }

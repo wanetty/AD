@@ -19,17 +19,17 @@
         <div>
             <form method="post" action = "altaVuelo">
                 <label> Número de vuelo </label> <br>
-                <input type="text" value="" id="numv" name="numv">
+                <input type="text" value="" id="numv" name="numv" required>
                 <br><label> Compañía </label> <br>
-                <input type="text" value="" id="comp" name="comp">
+                <input type="text" value="" id="comp" name="comp" required>
                 <br><label> Ciudad de origen </label> <br>
-                <input type="text" value="" id="corg" name="corg">
+                <input type="text" value="" id="corg" name="corg" required>
                 <br><label> Hora salida </label> <br>
-                <input type="text" value="" id="hsal" name="hsal">
+                <input type="text" value="" id="hsal" name="hsal" required>
                 <br><label> Ciudad de destino </label> <br>
-                <input type="text" value="" id="cdes" name="cdes">
+                <input type="text" value="" id="cdes" name="cdes" required>
                 <br><label> Hora de llegada </label> <br>
-                <input type="text" value="" id="hlle" name="hlle">
+                <input type="text" value="" id="hlle" name="hlle" required>
                 <br><br><input type="submit" value="Añadir">
  
             </form>
