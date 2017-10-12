@@ -11,8 +11,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,10 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author 1175057
+ * @author Papilomavirus
  */
-@WebServlet(urlPatterns = {"/buscarVuelo"})
-public class buscarVuelo extends HttpServlet {
+@WebServlet(urlPatterns = {"/buscarHotel"})
+public class buscarHotel extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,11 +34,10 @@ public class buscarVuelo extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, SQLException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
+             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
             out.println("<style>\n"
@@ -60,29 +57,28 @@ public class buscarVuelo extends HttpServlet {
                     + "</div><div>");
             out.println("<table style=\"width:100%\">\n"
                     + "  <tr>\n"
-                    + "    <th>Número de vuelo</th>\n"
-                    + "    <th>Comapañia</th> \n"
-                    + "    <th>Origen</th>\n"
-                    + "    <th>Hora salida</th>\n"
-                    + "    <th>Destino</th>\n"
-                    + "    <th>Hora llegada</th>\n"
+                    + "    <th>Nombre hotel</th>\n"
+                    + "    <th>Cadena</th> \n"
+                    + "    <th>Número de habitaciones</th>\n"
+                    + "    <th>Calle</th>\n"
+                    + "    <th>Numero</th>\n"
+                    + "    <th>Codigo postal</th>\n"
+                    + "    <th>Ciudad</th>\n"
+                    + "    <th>Província</th>\n"
+                    + "    <th>Pais</th>\n"
                     + "  </tr>");
-            String num_vuelo = request.getParameter("numv");
-            String compania = request.getParameter("comp");
-            String ciudad_origen = request.getParameter("corg");
-            String ciudad_destino = request.getParameter("cdes");
-            String consulta = "Select * from vuelos where 1 = 1";
-            if (!num_vuelo.isEmpty()) {
-                consulta = consulta + " And num_vuelo ='" + num_vuelo + "'";
+            String nom_hotel = request.getParameter("nomh");
+            String cadena = request.getParameter("cad");
+            String ciudad = request.getParameter("ciud");
+            String consulta = "Select * from hoteles where 1 = 1";
+            if (!nom_hotel.isEmpty()) {
+                consulta = consulta + " And nom_hotel ='" + nom_hotel + "'";
             }
-            if (!compania.isEmpty()) {
-                consulta = consulta + " And companyia = '" + compania + "'";
+            if (!cadena.isEmpty()) {
+                consulta = consulta + " And cadena = '" + cadena + "'";
             }
-            if (!ciudad_destino.isEmpty()) {
-                consulta = consulta + " And destino = '" + ciudad_destino + "'";
-            }
-            if (!ciudad_origen.isEmpty()) {
-                consulta = consulta + " And origen ='" + ciudad_origen + "'";
+            if (!ciudad.isEmpty()) {
+                consulta = consulta + " And ciudad = '" + ciudad + "'";
             }
             //out.println(consulta);//Imprime la fórmula.
             Connection connection = null;
@@ -103,6 +99,9 @@ public class buscarVuelo extends HttpServlet {
                             + "    <td>" + result.getString(5) + "</td>\n"
                             + "    <td>" + result.getString(6) + "</td>\n"
                             + "    <td>" + result.getString(7) + "</td>\n"
+                            + "    <td>" + result.getString(8) + "</td>\n"
+                            + "    <td>" + result.getString(9) + "</td>\n"
+                            + "    <td>" + result.getString(10) + "</td>\n"
                             + "  </tr>");
                     ++i;
                 }
@@ -140,13 +139,7 @@ public class buscarVuelo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(buscarVuelo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(buscarVuelo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -160,13 +153,7 @@ public class buscarVuelo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(buscarVuelo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(buscarVuelo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
