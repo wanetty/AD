@@ -8,6 +8,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <% 
+          String log = "0";
+          session.setAttribute("logueado",log);
+        %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Practica 2 </title>
     </head>

@@ -37,9 +37,19 @@ public class buscarHotel extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-             out.println("<!DOCTYPE html>");
+            out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
+            String log = null;
+            log = (String) request.getSession().getAttribute("logueado");
+            if (log == null || !log.equals("1")) {
+                String redirect = "login.jsp";
+                request.getSession().setAttribute("redirect", redirect);
+                String error = "No te has logueado, por favor vuelve al login.";
+                request.getSession().setAttribute("error", error);
+                response.sendRedirect("error.jsp");
+                return;
+            }
             out.println("<style>\n"
                     + "table, th, td {\n"
                     + "    border: 1px solid black;\n"
@@ -106,8 +116,10 @@ public class buscarHotel extends HttpServlet {
                     ++i;
                 }
                 out.println("</table></div>");
-                if (i == 0) out.println("Sin resultados en la búsqueda</div>");
-                
+                if (i == 0) {
+                    out.println("Sin resultados en la búsqueda</div>");
+                }
+
                 out.println("<div><a href ='menu.jsp'>Volver</a></div>");
 
             } catch (SQLException | ClassNotFoundException ex) {

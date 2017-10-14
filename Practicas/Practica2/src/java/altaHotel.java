@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -64,7 +65,7 @@ public class altaHotel extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
       //  processRequest(request, response);
-         PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter();
         String nom_hotel = request.getParameter("nomh");
         String cadena = request.getParameter("cad");
         String numero_habitacion = request.getParameter("nhab");
@@ -74,16 +75,30 @@ public class altaHotel extends HttpServlet {
         String ciudad = request.getParameter("ciu");
         String provincia = request.getParameter("prov");
         String pais = request.getParameter("pais");
+              String redirect = "altaHotel.jsp";
         if ((nom_hotel.equals("") || nom_hotel == null) || (cadena.equals("") || cadena == null) || (numero_habitacion.equals("") || numero_habitacion == null)
                 || (calle.equals("") || calle == null) || (numero_calle.equals("") || numero_calle == null) || (codigo_postal.equals("") || codigo_postal == null)
                 || (ciudad.equals("") || ciudad == null) || (provincia.equals("") || provincia == null) || (pais.equals("") || pais == null)) {
+            String error = "Hay campos que no has rellenado.";
+            request.getSession().setAttribute("error", error);
+            request.getSession().setAttribute("redirect", redirect);
             response.sendRedirect("error.jsp");
+            return;
+       
         }
         if (!isNumeric(numero_habitacion) || !isNumeric(numero_calle) || !isNumeric(codigo_postal)) {
+            String error = "Campos númericos, le has introducido caracteres no validos.";
+             request.getSession().setAttribute("error", error);
+             request.getSession().setAttribute("redirect", redirect);
             response.sendRedirect("error.jsp");
+            return;
         }
         if (isNumeric(pais) || isNumeric(provincia) || isNumeric(ciudad) || isNumeric(calle)) {
+            String error = "Campos no númericos, le has introducido caracteres no validos.";
+             request.getSession().setAttribute("error", error);
+             request.getSession().setAttribute("redirect", redirect);
             response.sendRedirect("error.jsp");
+            return;
         }
              Connection connection = null;
         try {
@@ -106,13 +121,13 @@ public class altaHotel extends HttpServlet {
                     +codigo_postal+"','"+ciudad+"','"+provincia+"','"+pais+"')");
             response.sendRedirect("menu.jsp");
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(altaVuelo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(altaHotel.class.getName()).log(Level.SEVERE, null, ex);
         }finally {
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(altaVuelo.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(altaHotel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

@@ -92,14 +92,18 @@ public class login extends HttpServlet {
             String user = request.getParameter("user");
             String pass = request.getParameter("pwd");
             ResultSet rs = st.executeQuery("Select * from usuarios where id_usuario = '" + user + "' and password = '" + pass + "'");
-            //processRequest(request,response);
+            String redirect = "login.jsp";
 
             if (!rs.next()) {
+                String error = "Usuario o contraseña no validos";
+                request.getSession().setAttribute("error", error);
+                request.getSession().setAttribute("redirect", redirect);
                 response.sendRedirect("error.jsp");
 
             } else {
-                HttpSession misession = request.getSession(true);
-
+                HttpSession session = request.getSession(true);
+                session.setAttribute("logueado", "1");
+                request.getSession().setAttribute("redirect", redirect);
                 response.sendRedirect("menu.jsp");
 
             }

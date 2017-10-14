@@ -87,20 +87,37 @@ public class altaVuelo extends HttpServlet {
         String hora_salida = request.getParameter("hsal");
         String ciudad_destino = request.getParameter("cdes");
         String hllegada = request.getParameter("hlle");
+        String redirect = "altaVuelo.jsp";
         if ((num_vuelo.equals("") || num_vuelo == null) || (compania.equals("") || compania == null) || (ciudad_origen.equals("") || ciudad_origen == null)
                 || (hora_salida.equals("") || hora_salida == null) || (ciudad_destino.equals("") || ciudad_destino == null) || (hllegada.equals("") || hllegada == null)) {
+            String error = "Hay campos que no has rellenado.";
+            request.getSession().setAttribute("error", error);
+            request.getSession().setAttribute("redirect", redirect);
             response.sendRedirect("error.jsp");
+            return;
         }
         if (!isNumeric(num_vuelo)) {
+            String error = "Campos númericos, le has introducido caracteres no validos.";
+            request.getSession().setAttribute("error", error);
+            request.getSession().setAttribute("redirect", redirect);
             response.sendRedirect("error.jsp");
+            return;
         }
         if (!isHour(hora_salida) || !isHour(hllegada)) {
+            String error = "Campos de horas, le has introducido un formato incorrecto.";
+            request.getSession().setAttribute("error", error);
+            request.getSession().setAttribute("redirect", redirect);
             response.sendRedirect("error.jsp");
+            return;
         }
         if (ciudad_origen.equals(ciudad_destino)) {
+            String error = "Ciudad de origen y destino iguales.";
+            request.getSession().setAttribute("error", error);
+            request.getSession().setAttribute("redirect", redirect);
             response.sendRedirect("error.jsp");
+            return;
         }
-            Connection connection = null;
+        Connection connection = null;
         try {
             Class.forName("org.sqlite.JDBC");
 
@@ -108,17 +125,17 @@ public class altaVuelo extends HttpServlet {
             connection = DriverManager.getConnection("jdbc:sqlite:C:\\WORKSPACE\\Universidad\\AD\\Practicas\\DBpractica2.db");
             Statement st = connection.createStatement();
             st.setQueryTimeout(30);
-          
+
             ResultSet id = st.executeQuery("Select max(id_vuelo) from vuelos");
             Integer id_num = -1;
-            while(id.next()){
-                id_num = (id.getInt(1)+1);
+            while (id.next()) {
+                id_num = (id.getInt(1) + 1);
             }
-            st.executeUpdate("Insert into vuelos values ('"+id_num+"','"+num_vuelo+"','"+compania.toUpperCase()+"','"+ciudad_origen.toUpperCase()+"','"+hora_salida+"','"+ciudad_destino.toUpperCase()+"','"+hllegada+"')");
+            st.executeUpdate("Insert into vuelos values ('" + id_num + "','" + num_vuelo + "','" + compania.toUpperCase() + "','" + ciudad_origen.toUpperCase() + "','" + hora_salida + "','" + ciudad_destino.toUpperCase() + "','" + hllegada + "')");
             response.sendRedirect("menu.jsp");
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(altaVuelo.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
+        } finally {
             if (connection != null) {
                 try {
                     connection.close();

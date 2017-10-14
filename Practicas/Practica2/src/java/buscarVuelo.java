@@ -43,6 +43,16 @@ public class buscarVuelo extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
+            String log = null;
+            log = (String) request.getSession().getAttribute("logueado");
+            if (log == null || !log.equals("1")) {
+                String redirect = "login.jsp";
+                request.getSession().setAttribute("redirect", redirect);
+                String error = "No te has logueado, por favor vuelve al login.";
+                request.getSession().setAttribute("error", error);
+                response.sendRedirect("error.jsp");
+                return;
+            }
             out.println("<style>\n"
                     + "table, th, td {\n"
                     + "    border: 1px solid black;\n"

@@ -8,13 +8,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <%
+            String error = (String)session.getAttribute("error");
+            String redirect = (String)session.getAttribute("redirect");
+            %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Práctica 2 - ERROR</title>
     </head>
     <body>
         <div style="text-align: center">
-        <h1>USUARIO NO ENCONTRADO</h1>
-        <a href="login.jsp" >Volver a página de login </a>  
+            
+        <h1><% out.println(error); %></h1>
+        <%out.println(" <a href='"+ redirect + "' >Volver</a> ");%>
+        
         </div>
     </body>
 </html>

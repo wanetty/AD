@@ -14,6 +14,17 @@
 <html>
 
     <head>
+        <% 
+          String log = null;
+          log = (String)session.getAttribute("logueado");
+          if(log == null ||!log.equals("1")){
+              String redirect = "login.jsp";
+                request.getSession().setAttribute("redirect", redirect);
+              String error = "No te has logueado, por favor vuelve al login.";
+              session.setAttribute("error", error);
+              response.sendRedirect("error.jsp");
+          }
+        %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Practica 2 altaVuelo</title>
     </head>
