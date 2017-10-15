@@ -56,12 +56,12 @@ public class buscarHotel extends HttpServlet {
                     + "    border-collapse: collapse;\n"
                     + "}\n"
                     + "</style>");
-            out.println("<title>Practica 2 buscarVuelo</title>");
+            out.println("<title>Practica 2 buscarHotel</title>");
             out.println("</head>");
             out.println("<body>");
 
             out.println("<div style='text-align:center'>"
-                    + "<h1>Resultado búsquedas de vuelo</h1>"
+                    + "<h1>Resultado búsquedas de hotel</h1>"
                     + "<hr>"
                     + "<br>"
                     + "</div><div>");
@@ -151,7 +151,7 @@ public class buscarHotel extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+          response.sendRedirect("buscarHotel.jsp");
     }
 
     /**

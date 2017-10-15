@@ -150,13 +150,7 @@ public class buscarVuelo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(buscarVuelo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(buscarVuelo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+          response.sendRedirect("altaVuelo.jsp");
     }
 
     /**
