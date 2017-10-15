@@ -29,8 +29,8 @@
             <hr><br>
             <a href="altaVuelo.jsp" > Alta vuelo </a><br>
             <a href="altaHotel.jsp" > Alta hotel </a><br>
-            <a href="buscarVuelo.jsp" > buscar vuelo </a><br>
-            <a href="buscarHotel.jsp"> buscar hotel </a><br><br>
+            <a href="buscarVuelo.jsp" > Buscar vuelo </a><br>
+            <a href="buscarHotel.jsp"> Buscar hotel </a><br><br>
             <a href='login.jsp' >Cerrar sesión</a>
         </div>
 

@@ -28,7 +28,7 @@
                 <label>Password</label>
                 <input type="password" name="pwd" id="pwd" value=""><br><br>
                 <input type="submit" value="Entrar">
-                
+                <a href="altaUsuario.jsp" >Nuevo usuario.</a>
             </form>
             
         </div>

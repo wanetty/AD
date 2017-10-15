@@ -115,7 +115,6 @@ public class altaHotel extends HttpServlet {
             while(id.next()){
                 id_num = (id.getInt(1)+1);
             }
-            out.println(id_num);
             st.executeUpdate("Insert into hoteles values ('"+id_num+"','"+nom_hotel+"','"+cadena+"','"
                     +numero_habitacion+"','"+calle+"','"+numero_calle+"','"
                     +codigo_postal+"','"+ciudad+"','"+provincia+"','"+pais+"')");
