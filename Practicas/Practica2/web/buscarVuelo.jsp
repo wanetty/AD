@@ -101,6 +101,7 @@
             </select>
 
             <br><br><input type="submit" value="Buscar">
+            <a href='menu.jsp' >Volver</a>
 
         </form>
         <div>
