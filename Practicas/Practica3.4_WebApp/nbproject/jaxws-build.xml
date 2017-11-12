@@ -42,5 +42,21 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/wsvuelo"/>
         <delete dir="${build.generated.dir}/jax-wsCache/WSVuelo"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-WSVuelo"/>
+    <target name="wsimport-client-WSHotel" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/WSHotel"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WSHotel" destdir="${build.generated.dir}/jax-wsCache/WSHotel" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/WSHotel/wsdl/localhost_8080/Practica3.2/WSHotel.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/Practica3.2/WSHotel?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/WSHotel/wsdl/localhost_8080/Practica3.2/WSHotel.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/WSHotel"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/WSHotel">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-WSHotel" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/wshotel"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/WSHotel"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-WSVuelo, wsimport-client-WSHotel"/>
 </project>

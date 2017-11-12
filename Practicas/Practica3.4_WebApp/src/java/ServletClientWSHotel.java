@@ -12,17 +12,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.WebServiceRef;
-import wsvuelo.WSVuelo_Service;
+import wshotel.WSHotel_Service;
 
 /**
  *
  * @author Micky
  */
-@WebServlet(urlPatterns = {"/ServletClientWSVuelo"})
-public class ServletClientWSVuelo extends HttpServlet {
+@WebServlet(urlPatterns = {"/ServletClientWSHotel"})
+public class ServletClientWSHotel extends HttpServlet {
 
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Practica3.3/WSVuelo.wsdl")
-    private WSVuelo_Service service;
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Practica3.2/WSHotel.wsdl")
+    private WSHotel_Service service;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,22 +41,22 @@ public class ServletClientWSVuelo extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServletClient</title>");            
+            out.println("<title>Servlet ServletClientWSHotel</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet de Vuelo </h1>");
+            out.println("<h1>Servlet de Hotel</h1>");
             
-            try {
-            String id_vuelo = request.getParameter("idVuelo");
+             try {
+            String id_hotel = request.getParameter("idHotel");
             String fecha = request.getParameter("fecha");
-            if (!id_vuelo.isEmpty() && id_vuelo!=null && isNumeric(id_vuelo)){
+            if (!id_hotel.isEmpty() && id_hotel!=null && isNumeric(id_hotel)){
                 if (!fecha.isEmpty() && fecha!=null && isNumeric(fecha)){
-                    int result = consultaLibres(Integer.parseInt(id_vuelo),Integer.parseInt(fecha));
-                    out.println("Plazas libres = " + result);
-                    result = reservaPlaza(Integer.parseInt(id_vuelo),Integer.parseInt(fecha));
+                    int result = consultaLibres(Integer.parseInt(id_hotel),Integer.parseInt(fecha));
+                    out.println("Habitaciones libres = " + result);
+                    result = reservaHabitacion(Integer.parseInt(id_hotel),Integer.parseInt(fecha));
                     out.println("<br>");
-                    if (result >= 0) out.println("Plaza Reservada, asientos ocupados = " + result);
-                    else out.println("No quedan plazas libres");
+                    if (result >= 0) out.println("Habitacion Reservada, Habitaciones ocupadas = " + result);
+                    else out.println("No quedan habitaciones libres");
                  }
                 else out.println("Formato Fecha incorrecta");
             }
@@ -67,7 +67,8 @@ public class ServletClientWSVuelo extends HttpServlet {
             out.println("Exception: " + ex);
             } 
              out.println("<br>");
-            out.println("<a href=\"ServiceVuelo.jsp\">Volver</a>");
+            out.println("<a href=\"ServiceHotel.jsp\">Volver</a>");
+            
             
             out.println("</body>");
             out.println("</html>");
@@ -113,20 +114,20 @@ public class ServletClientWSVuelo extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private int consultaLibres(int idVuelo, int fecha) {
+    private int consultaLibres(int idHotel, int fecha) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
-        wsvuelo.WSVuelo port = service.getWSVueloPort();
-        return port.consultaLibres(idVuelo, fecha);
+        wshotel.WSHotel port = service.getWSHotelPort();
+        return port.consultaLibres(idHotel, fecha);
     }
 
-    private int reservaPlaza(int idVuelo, int fecha) {
+    private int reservaHabitacion(int idHotel, int fecha) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
-        wsvuelo.WSVuelo port = service.getWSVueloPort();
-        return port.reservaPlaza(idVuelo, fecha);
+        wshotel.WSHotel port = service.getWSHotelPort();
+        return port.reservaHabitacion(idHotel, fecha);
     }
-     private static boolean isNumeric(String cadena) {
+ private static boolean isNumeric(String cadena) {
         try {
             Integer.parseInt(cadena);
             return true;
@@ -134,5 +135,4 @@ public class ServletClientWSVuelo extends HttpServlet {
             return false;
         }
     }
-
 }
