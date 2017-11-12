@@ -52,11 +52,14 @@ public class ServletClientWSVuelo extends HttpServlet {
             if (!id_vuelo.isEmpty() && id_vuelo!=null && isNumeric(id_vuelo)){
                 if (!fecha.isEmpty() && fecha!=null && isNumeric(fecha)){
                     int result = consultaLibres(Integer.parseInt(id_vuelo),Integer.parseInt(fecha));
+                    if (result > 0){
                     out.println("Plazas libres = " + result);
                     result = reservaPlaza(Integer.parseInt(id_vuelo),Integer.parseInt(fecha));
                     out.println("<br>");
-                    if (result >= 0) out.println("Plaza Reservada, asientos ocupados = " + result);
-                    else out.println("No quedan plazas libres");
+                    out.println("Plaza Reservada, asientos ocupados = " + result);
+                   
+                    }
+                    else out.println("No quedan plazas libres o el vuelo/fecha no se ha encontrado"); 
                  }
                 else out.println("Formato Fecha incorrecta");
             }

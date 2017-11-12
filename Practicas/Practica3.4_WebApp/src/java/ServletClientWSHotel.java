@@ -52,12 +52,15 @@ public class ServletClientWSHotel extends HttpServlet {
             if (!id_hotel.isEmpty() && id_hotel!=null && isNumeric(id_hotel)){
                 if (!fecha.isEmpty() && fecha!=null && isNumeric(fecha)){
                     int result = consultaLibres(Integer.parseInt(id_hotel),Integer.parseInt(fecha));
+                    if (result > 0){
                     out.println("Habitaciones libres = " + result);
                     result = reservaHabitacion(Integer.parseInt(id_hotel),Integer.parseInt(fecha));
                     out.println("<br>");
-                    if (result >= 0) out.println("Habitacion Reservada, Habitaciones ocupadas = " + result);
-                    else out.println("No quedan habitaciones libres");
+                    out.println("Habitacion Reservada, Habitaciones ocupadas = " + result);
+                    
                  }
+                    else out.println("No quedan habitaciones libres o no se ha encontrado el hotel/fecha");
+                }
                 else out.println("Formato Fecha incorrecta");
             }
             

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/Practica3.3/WSVuelo?wsdl" uri="src/conf/xml-resources/web-service-references/WSVuelo/wsdl/localhost_8080/Practica3.3/WSVuelo.wsdl"/>
+    <system systemId="http://localhost:8080/Practica3.3/WSVuelo?xsd=1" uri="src/conf/xml-resources/web-service-references/WSVuelo/wsdl/localhost_8080/Practica3.3/WSVuelo.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/Practica3.2/WSHotel?wsdl" uri="src/conf/xml-resources/web-service-references/WSHotel/wsdl/localhost_8080/Practica3.2/WSHotel.wsdl"/>
+    <system systemId="http://localhost:8080/Practica3.2/WSHotel?xsd=1" uri="src/conf/xml-resources/web-service-references/WSHotel/wsdl/localhost_8080/Practica3.2/WSHotel.xsd_1.xsd"/>
+</catalog>
