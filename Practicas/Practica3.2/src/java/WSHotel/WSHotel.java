@@ -88,9 +88,13 @@ public class WSHotel {
             if(rs.next()){
                 ocupadas = rs.getInt(1);
                 max = rs.getInt(2);
-                if(max - ocupadas > 0) ocupadas = ocupadas + 1;
+                if(max - ocupadas > 0){
+                ocupadas = ocupadas + 1;
                 st.executeUpdate("Update hotel_fecha Set num_hab_ocupadas ='" + ocupadas + "' where  id_hotel ='" + id_hotel + "'");
                 return ocupadas;
+            }else{
+                    return -1;
+                    }
             }else{
                 return -1;
             }
