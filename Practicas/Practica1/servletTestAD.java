@@ -18,7 +18,6 @@ import java.sql.Statement;
 
 /**
  *
- * @author silvia.llorente
  */
 @WebServlet(urlPatterns = {"/servletTestAD"})
 public class servletTestAD extends HttpServlet {
